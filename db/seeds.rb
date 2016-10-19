@@ -55,6 +55,24 @@ User.create(
   name: Faker::Name.name
   )
 
+User.create(
+  email: "8@8.com",
+  password: "123456",
+  name: Faker::Name.name
+  )
+
+User.create(
+  email: "9@9.com",
+  password: "123456",
+  name: Faker::Name.name
+  )
+
+User.create(
+  email: "10@10.com",
+  password: "123456",
+  name: Faker::Name.name
+  )
+
 Character.create(
   name: "Town",
   description: "Town couldn't do anything at night, but could discuss and have the ability to vote and kill one suspicious person after every night."
