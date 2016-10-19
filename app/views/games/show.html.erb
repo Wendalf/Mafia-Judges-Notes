@@ -4,52 +4,27 @@
 <h3>Game Status: <%= @game.game_status %></h3>
 <!-- check game_status -->
 <% if @game.recruiting? %>
-    
-    <h4>Characters for this game are:</h4>
-    <ul>
-      <% @game.characters.each do |character|%>
-        <li><%= link_to character.name, character_path(character) %></li>
-      <% end %>
-    </ul>
 
-    <!-- Game met capacity. Start the game. -->
-    <% if judge?(@game) && (@game.players.size == @game.capacity) %>
-      <p>This game has met its capacity.</p>
-      <p><%= link_to "Star the Game", edit_game_path(@game) %></p>
-      <!-- Role assign finished. Start the Night. -->
-    <% end %>
+  <!-- Starting the Game -->
+  <% if can_start_game?(@game) %>
+    <!-- Game met capacity. Start the assign characters. -->
+    <%= render 'start_game' %>
+  <% end %>
+  
+  <%= render 'characters' %>
 
-
-    <!-- Player who has joined the game -->
-    <% if !@game.players.nil? %>
-      <b><%= @game.players.size %></b> players have joined the game:
-      <ol>
-      <% @game.players.each do |player| %>
-        <li>
-        <%= player.name %>
-        </li>
-        <br>
-      <% end %>
-      </ol>
-    <% end %>
+  <!-- Player who has joined the game -->
+  <% if players_joined_game?(@game) %>
+    <%= render 'players_joined_game' %>
+  <% end %>
   
 <% elsif @game.playing? %>
 
-    <!-- Outputs everyone's name and their character's name -->
-    <% @game.characters.uniq.each do |character| %>
-      <div>
-        <ul>
-        <%= link_to character.name, character_path(character) %>:
-          <% @game.game_players_based_on_character(character.id).each do |game_player| %>
-            <li>
-            <%= player_name(game_player) %>
-            <% if current_user.name == player_name(game_player) %>
-              <== That's you!!
-            <% end %>
-            </li>
-        <% end %>
-        </ul>
-      </div>
-    <% end %>
+  <!-- Outputs everyone's name and their character's name -->
+  <%= render 'characters_players' %>
+  <!-- Role assign finished. Start the Night. -->
+  <% if can_start_night?(@game) %>
+    <%= link_to "Start the Night", new_game_night_path(@game) %>
+  <% end %>  
         
-<% end %><!-- status: recruiting  -->
+<% end %>

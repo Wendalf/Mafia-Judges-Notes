@@ -1,0 +1,9 @@
+<b><%= @game.players.size %></b> players have joined the game:
+<ol>
+<% @game.players.each do |player| %>
+  <li>
+  <%= player.name %>
+  </li>
+  <br>
+<% end %>
+</ol>

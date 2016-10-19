@@ -80,15 +80,18 @@ Character.create(
 
 Character.create(
   name: "Mafia",
-  description: "Mafia can kill one person per night secretly."
+  description: "Mafia can kill one person per night secretly.",
+  ability: "kill"
   )
 
 Character.create(
   name: "Police",
-  description: "Police check one person to see if he/she is the mafia per night secretly."
+  description: "Police check one person to see if he/she is the mafia per night secretly.",
+  ability: "check"
   )
 
 Character.create(
   name: "Doctor",
-  description: "Doctor can save one person per night secretly."
+  description: "Doctor can save one person per night secretly.",
+  ability: "save"
   )

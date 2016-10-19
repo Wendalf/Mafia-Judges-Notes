@@ -1,0 +1,18 @@
+<h1>A new Night!</h1>
+<h3>All players close your eyes.</h3>
+<div>
+  <%= form_tag(game_nights_path(@game), method: "POST") do %>
+
+    <% @night.characters.uniq.each do |character| %>
+      <% if character.ability != nil %>
+      <div>
+        <%= label_tag("#{character.name}", "Who did #{character.name} #{character.ability}?") %>
+        <%= select_tag("#{character.name}", options_from_collection_for_select(@game.live_players_can_be_taken_action_by(character), :id, :name))%>
+      </div>
+      <% end %>
+    <% end %>
+
+    <%= hidden_field_tag(:game_id, "#{@game.id}") %>
+    <%= submit_tag("Night is over") %>
+  <% end %>
+</div>

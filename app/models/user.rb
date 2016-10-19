@@ -5,13 +5,13 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:facebook, :github]
 
   #as judge
-  has_many :games, :foreign_key => 'judge_id'
+  has_many :games, :foreign_key => "judge_id"
   has_many :players, through: :games 
   
   #as player
   has_many :game_players, :foreign_key => "player_id"
-  has_many :joined_games, through: :game_players, :source =>"game"
-  has_many :characters, through: :game_players, :source =>"character" 
+  has_many :joined_games, through: :game_players, :source => "game"
+  has_many :characters, through: :game_players, :source => "character" 
 
 
 

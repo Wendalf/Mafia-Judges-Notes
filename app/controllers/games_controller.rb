@@ -20,7 +20,6 @@ class GamesController < ApplicationController
   end
 
   def create
-    binding.pry
     @game = Game.new(game_params)
     if @game.save
       redirect_to game_path(@game)
@@ -34,7 +33,10 @@ class GamesController < ApplicationController
   end
   
   def edit
-
+    if @game.playing? || @game.over?
+      flash[:alert] = "Access denied."
+      redirect_to root_path
+    end
   end
 
   def update
@@ -47,16 +49,6 @@ class GamesController < ApplicationController
       flash[:alert] = "Access denied."
       redirect_to root_path
     end
-
-    
-    # if current_user.admin? || current_user.vip? || current_user.try(:id) == @post.user_id
-    #   @post.update(post_params)
-    #   flash[:notice] = "Post updated!"
-    # else
-    #   flash[:alert] = "Access denied."
-    # end
-    # redirect_to post_path(@post) 
-
   end
 
   def destroy

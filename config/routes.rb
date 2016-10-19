@@ -1,10 +1,13 @@
 Rails.application.routes.draw do
   
 
+  resources :nights
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   root to: "welcome#home"
   get '/about' => 'welcome#about'
-  resources :games
+  resources :games do 
+    resources :nights
+  end
   get '/opengames' => 'games#opengames'
   get '/judgedgames' => 'games#judgedgames'
   resources :characters

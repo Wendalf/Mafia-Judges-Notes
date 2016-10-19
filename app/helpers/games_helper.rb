@@ -1,7 +1,11 @@
 module GamesHelper
 
-  def judge?(game)
-    game.judge == current_user
+  def judge_name(game)
+    if game.judge == current_user
+      "you"
+    else
+      game.judge.name
+    end
   end
 
   def can_join_game?
@@ -12,16 +16,23 @@ module GamesHelper
     current_user.joined_games.include?(game)
   end
 
-  def player_name(game_player)
-    game_player.player.name
+  def players_joined_game?(game)
+    !game.players.nil?
   end
 
-  def judge_name(game)
-    if game.judge == current_user
-      "you"
-    else
-      game.judge.name
-    end
+  def can_start_game?(game)
+    (game.judge == current_user) && (game.players.size == game.capacity) 
   end
+
+  def can_start_night?(game)
+    game.judge == current_user
+  end
+
+
+
+
+
+
+
 
 end

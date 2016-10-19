@@ -1,0 +1,15 @@
+<% @game.characters.uniq.each do |character| %>
+  <div>
+    <ul>
+    <%= link_to character.name, character_path(character) %>:
+      <% @game.game_players_based_on_character(character.id).each do |game_player| %>
+        <li>
+        <%= game_player.player.name %>
+        <% if current_user.name == game_player.player.name %>
+          <== That's you!!
+        <% end %>
+        </li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>

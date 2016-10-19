@@ -1,5 +1,6 @@
 class Game < ActiveRecord::Base
   belongs_to :judge, :class_name => "User"
+  has_many :nights
   has_many :game_players
   has_many :players, through: :game_players, :class_name => "User"
   has_many :characters, through: :game_players
@@ -27,6 +28,18 @@ class Game < ActiveRecord::Base
   def game_players_based_on_character(character_id)
     self.game_players_assigned_character.where("character_id = ?", character_id)
   end
+
+  def live_players_can_be_taken_action_by(character)
+    live_game_players = self.game_players_assigned_character.where("player_status = ?", 0)
+    live_players = []
+    live_game_players.each do |game_player|
+      if game_player.character != character
+        live_players << game_player.player
+      end
+    end
+    live_players
+  end
+
 
   # def rules(capacity)
   #   case capacity
