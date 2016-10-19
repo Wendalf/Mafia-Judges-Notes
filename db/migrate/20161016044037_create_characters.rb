@@ -3,7 +3,7 @@ class CreateCharacters < ActiveRecord::Migration[5.0]
     create_table :characters do |t|
       t.string :name
       t.string :description
-      t.integer :action, default: 0
+      t.string :ability
 
       t.timestamps null: false
     end
