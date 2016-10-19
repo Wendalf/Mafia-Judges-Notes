@@ -1,4 +1,5 @@
 module WelcomeHelper
+
   def greetings
     if current_user && !current_user.name.nil? 
       "Hello #{current_user.name}!"
@@ -8,4 +9,6 @@ module WelcomeHelper
       "Welcome to Mafia Game - The Judge's Note"
     end
   end
+
+
 end

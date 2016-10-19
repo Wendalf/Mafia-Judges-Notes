@@ -1,1 +1,14 @@
+<div>
 <%= greetings %>
+</div>
+
+
+<div>
+<% if user_signed_in? && current_game %>
+  <!-- game currently judging -->
+  <%= link_to "Game you are currently in right now", game_path(current_game) %>
+  <% elsif user_signed_in? %>
+  <!-- create or join a game -->
+  <%= link_to "Create A New Game", new_game_path %> | <%= link_to "Join A Game", opengames_path %>
+<% end %>
+</div>

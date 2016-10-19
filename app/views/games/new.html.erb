@@ -1,0 +1,29 @@
+<br>
+<%= form_for @game do |f| %>
+
+  <%= f.label :capacity, "How many people will be playing this game?" %>
+  <%= f.number_field :capacity %>
+  <br>
+
+  <!-- has_many characters through game_players nested form -->
+  Choose from existing basic characters:
+  <br>
+  <%= f.collection_check_boxes :character_ids, Character.all, :id, :name %>
+  <br>
+  <b>Build a new character for this game:</b>
+  <br>
+  <%= f.fields_for :characters, @game.characters.build do |character| %>
+    <%= character.label :name %>
+    <%= character.text_field :name %>
+    <br>
+    <%= character.label :description %>
+    <br>
+    <%= character.text_area :description, size: "25x4" %>
+  <% end %>
+
+
+  <br>
+  <!-- assign game to current_user as a judge -->
+  <%= f.hidden_field :judge_id, :value => current_user.id %>
+  <%= f.submit %>
+<% end %>

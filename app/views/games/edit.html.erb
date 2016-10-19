@@ -1,0 +1,16 @@
+<h1>You are about to start the game</h1>
+
+<h3>Assign everyone a role!</h3>
+
+
+<%= form_for(@game) do |f| %>
+
+  <%= f.fields_for :game_players do |game_player| %>
+      <% if able_to_assign_character?(game_player) %>
+      <%= game_player.label player_name(game_player) %>
+      <%= game_player.collection_select(:character_id, @game.characters, :id, :name) %>
+      <% end %>
+    <% end %>
+    <%= f.submit %>
+<% end %>
+

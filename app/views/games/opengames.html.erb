@@ -1,0 +1,15 @@
+<ul>
+<% @games.each do |game| %>
+  <li>
+  <%= link_to "Game #{game.id}", game_path(game) %> | Judge: <%= game.judge.name %>
+
+  <% if !judge?(game) && can_join_game? %>
+    <%= button_to 'Join the Game', game_players_path(game_id: game) %>
+  <% end %>
+
+  <% if playing_this_game?(game) %>
+    <= You've joined this game!
+  <% end %>
+  </li>
+<% end %>
+</ul>

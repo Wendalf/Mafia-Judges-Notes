@@ -1,4 +1,4 @@
-class User < ApplicationRecord
+class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable
   devise :database_authenticatable, :registerable,
@@ -11,6 +11,7 @@ class User < ApplicationRecord
   #as player
   has_many :game_players, :foreign_key => "player_id"
   has_many :joined_games, through: :game_players, :source =>"game"
+  has_many :characters, through: :game_players, :source =>"character" 
 
 
 
@@ -21,5 +22,6 @@ class User < ApplicationRecord
       user.password = Devise.friendly_token[0,20]
     end      
   end
+
   
 end
