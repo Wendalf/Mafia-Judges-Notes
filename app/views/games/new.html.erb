@@ -16,6 +16,12 @@
     <%= character.label :name %>
     <%= character.text_field :name %>
     <br>
+    <%= character.label :ability %>
+    <%= character.text_field :ability %>
+    <br>
+    <%= character.label :ability_effect, "Ability effect health or other's ability" %>
+    <%= character.number_field :ability_effect, in: -1..1, step: 1 %>
+    <br>
     <%= character.label :description %>
     <br>
     <%= character.text_area :description, size: "25x4" %>

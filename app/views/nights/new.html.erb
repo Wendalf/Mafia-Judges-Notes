@@ -1,14 +1,16 @@
 <h1>A new Night!</h1>
 <h3>All players close your eyes.</h3>
+
+<!-- Night Events: What happened tonight -->
 <div>
   <%= form_tag(game_nights_path(@game), method: "POST") do %>
 
-    <% @night.characters.uniq.each do |character| %>
-      <% if character.ability != nil %>
-      <div>
-        <%= label_tag("#{character.name}", "Who did #{character.name} #{character.ability}?") %>
-        <%= select_tag("#{character.name}", options_from_collection_for_select(@game.live_players_can_be_taken_action_by(character), :id, :name))%>
-      </div>
+    <% @game.characters.uniq.each do |character| %>
+      <% if character.ability != nil && !GamePlayer.character_alive(@game, character).empty? %>
+        <div>
+          <%= label_tag("night_events[#{character.name}]", "Who did #{character.name} #{character.ability}?") %>
+          <%= select_tag("night_events[#{character.name}]", options_from_collection_for_select(@game.alive_players, :id, :name))%>
+        </div>
       <% end %>
     <% end %>
 
@@ -16,3 +18,15 @@
     <%= submit_tag("Night is over") %>
   <% end %>
 </div>
+
+
+
+<h3>What happened so far:</h3>
+<% @game.nights.each_with_index do |night, index| %>
+  <p>Night <%= index+1 %>: <%= night.notes %></p>
+<% end %>
+
+<!-- Outputs everyone's name and their character's name -->
+<%= render 'games/characters_players' %>
+
+

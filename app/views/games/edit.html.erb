@@ -7,10 +7,12 @@
 
   <%= f.fields_for :game_players do |game_player| %>
       <% if able_to_assign_character?(game_player) %>
-      <%= game_player.label player_name(game_player) %>
+      <%= game_player.label :character_id, "#{player_name(game_player)}" %>
       <%= game_player.collection_select(:character_id, @game.characters, :id, :name) %>
+      <br>
       <% end %>
     <% end %>
-    <%= f.submit %>
+    <br>
+    <%= f.submit "Assign Characters"%>
 <% end %>
 

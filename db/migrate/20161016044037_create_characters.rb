@@ -4,6 +4,7 @@ class CreateCharacters < ActiveRecord::Migration[5.0]
       t.string :name
       t.string :description
       t.string :ability
+      t.integer :ability_effect
 
       t.timestamps null: false
     end

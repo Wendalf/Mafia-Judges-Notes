@@ -19,17 +19,18 @@ ActiveRecord::Schema.define(version: 20161019174934) do
     t.string   "name"
     t.string   "description"
     t.string   "ability"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "ability_effect"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "game_players", force: :cascade do |t|
     t.integer  "game_id"
     t.integer  "player_id"
     t.integer  "character_id"
-    t.integer  "player_status", default: 0
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.boolean  "player_alive", default: true, null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "games", force: :cascade do |t|
@@ -42,6 +43,7 @@ ActiveRecord::Schema.define(version: 20161019174934) do
 
   create_table "nights", force: :cascade do |t|
     t.integer  "game_id"
+    t.string   "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

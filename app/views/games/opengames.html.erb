@@ -3,7 +3,7 @@
   <li>
   <%= link_to "Game #{game.id}", game_path(game) %> | Judge: <%= game.judge.name %>
 
-  <% if !judge?(game) && can_join_game? %>
+  <% if show_join_game?(game) %>
     <%= button_to 'Join the Game', game_players_path(game_id: game) %>
   <% end %>
 

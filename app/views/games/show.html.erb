@@ -1,30 +1,52 @@
 <h1>Game <%= @game.id %></h1>
-<h2>Judging by <%= judge_name(@game) %>!</h2>
+<h2>Judged by <%= judge_name(@game) %>!</h2>
 <h3>Game Capacity: <%= @game.capacity %></h3>
 <h3>Game Status: <%= @game.game_status %></h3>
-<!-- check game_status -->
+
+<!-- Show different contents based on game status -->
 <% if @game.recruiting? %>
 
-  <!-- Starting the Game -->
-  <% if can_start_game?(@game) %>
-    <!-- Game met capacity. Start the assign characters. -->
+  <!-- as Judge - Start the Game -->
+  <% if judge_can_start_game?(@game) %>
+    <!-- Game met capacity. Start assigning characters. -->
     <%= render 'start_game' %>
   <% end %>
   
   <%= render 'characters' %>
 
+  <!-- as Player - join the game button -->
+  <% if show_join_game?(@game) %>
+    <%= button_to 'Join the Game', game_players_path(game_id: @game) %>
+  <% end %>
+
   <!-- Player who has joined the game -->
   <% if players_joined_game?(@game) %>
     <%= render 'players_joined_game' %>
   <% end %>
-  
+
 <% elsif @game.playing? %>
 
   <!-- Outputs everyone's name and their character's name -->
+  <% if judge?(@game) %>
+    <%= render 'characters_players' %>
+    <!-- Role assign finished. Start the Night. -->
+    <% if can_start_night?(@game) %>
+      <%= link_to "Start a new Night", new_game_night_path(@game) %>
+    <% end %> 
+  <% else %>
+    <h4>Your character is <%= current_user.players_character_name(@game) %></h4>  
+  <% end %>
+
+<% else %>
+  
+  <!-- After game over, outputs game results with nights' notes and logs -->
+  <h3>What happened in this game:</h3>
+  <%= render 'nights/events' %>
   <%= render 'characters_players' %>
-  <!-- Role assign finished. Start the Night. -->
-  <% if can_start_night?(@game) %>
-    <%= link_to "Start the Night", new_game_night_path(@game) %>
-  <% end %>  
         
+<% end %>
+
+<!-- Judge can delete the game at anytime -->
+<% if judge?(@game) %>
+  <%= button_to("Delete the Game", game_path(@game), method: "delete", data: { confirm: "Are you sure?" }) %>
 <% end %>

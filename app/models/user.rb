@@ -23,5 +23,8 @@ class User < ActiveRecord::Base
     end      
   end
 
+  def players_character_name(game)
+    self.game_players.find_by(game_id: game.id).character.name
+  end
   
 end

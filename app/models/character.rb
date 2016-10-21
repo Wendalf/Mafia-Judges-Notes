@@ -6,4 +6,16 @@ class Character < ActiveRecord::Base
   validates_uniqueness_of :name
   #need to implement the error and error message on CSS#
 
+
+  def kill?
+    self.ability_effect < 0
+  end
+
+  def heal?
+    self.ability_effect > 0
+  end
+
+  def check
+    self.ability_effect == 0
+  end
 end

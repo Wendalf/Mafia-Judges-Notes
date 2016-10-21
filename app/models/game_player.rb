@@ -3,9 +3,6 @@ class GamePlayer < ActiveRecord::Base
   belongs_to :player, :class_name => "User"
   belongs_to :character
 
-
-  enum player_status: [:live, :dead, :blocked]
-
   def has_player?
     !!self.player_id
   end
@@ -14,16 +11,25 @@ class GamePlayer < ActiveRecord::Base
     !!self.character_id
   end
 
-  def self.players(game_id)
-    self.where("game_id = ?", game_id).where.not(player_id: nil)
+  def self.game_player(game_id, player_id)
+    where("game_id = ?", game_id).where("player_id = ?", player_id).first
   end
 
-  def self.no_character(game_id)
-    self.where("game_id = ?", game_id).where(character_id: nil)
+  def self.alive_game_players(game)
+    where("game_id = ?", game.id).where.not(player_id: nil).where("player_alive = ?", true)
   end
 
-  def self.players_has_no_character(game_id)
-    player(game_id).merge(no_character(game_id))
+  def self.character_alive(game, character)
+    where("game_id = ?", game.id).where.not(player_id: nil).where("character_id = ?", character.id).where("player_alive = ?", true)
   end
+
+  def self.alive_mafia_number(game)
+    alive_game_players(game).where("character_id = ?", 2).size
+  end
+
+  def self.alive_good_people_number(game)
+    alive_game_players(game).size - alive_mafia_number(game)
+  end
+
   
 end

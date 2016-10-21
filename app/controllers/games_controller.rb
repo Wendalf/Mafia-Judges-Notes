@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_game, only: [:show, :edit, :update]
+  before_action :find_game, only: [:show, :edit, :update, :destroy]
 
 
   def index
@@ -29,7 +29,10 @@ class GamesController < ApplicationController
   end
 
   def show
-    
+    if (@game.game_status == "playing") && (!current_user.joined_games.find_by(id: @game.id)) && (current_user != @game.judge)
+      flash[:alert] = "Access denied."
+      redirect_to root_path
+    end
   end
   
   def edit
@@ -52,17 +55,22 @@ class GamesController < ApplicationController
   end
 
   def destroy
+    @game.destroy
+    redirect_to root_path
   end
 
   private
 
   def find_game
     @game = Game.find_by(id: params[:id])
-
+    if @game.nil?
+      flash[:alert] = "Game not found."
+      redirect_to root_path
+    end
   end
 
   def game_params
-    params.require(:game).permit(:capacity, :judge_id, :game_status, character_ids: [], characters_attributes: [:name, :description], game_players: [], game_players_attributes: [:character_id, :id])
+    params.require(:game).permit(:capacity, :judge_id, :game_status, character_ids: [], characters_attributes: [:name, :description, :ability, :ability_effect], game_players: [], game_players_attributes: [:character_id, :id])
   end
 
 

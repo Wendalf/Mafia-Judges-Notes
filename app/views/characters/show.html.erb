@@ -1,5 +1,8 @@
 <h1><%= @character.name %></h1>
 <h3>Description:</h3>
 <p><%=  @character.description %></p>
-<h4>Ability: <%= @character.ability %></h4>
+<% if @character.ability != nil %>
+  <h4>Ability: <%= @character.ability %></h4>
+  <h4>Ability to effect other's life or other player's ability: <%= @character.ability_effect %></h4>
+<% end %>
 <%= link_to "Back to characters list", characters_path %>

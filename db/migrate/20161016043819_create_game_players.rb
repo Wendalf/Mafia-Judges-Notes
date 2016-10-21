@@ -4,7 +4,7 @@ class CreateGamePlayers < ActiveRecord::Migration[5.0]
       t.integer :game_id
       t.integer :player_id
       t.integer :character_id
-      t.integer :player_status, default: 0
+      t.boolean :player_alive, null: false, default: true
 
       t.timestamps null: false
     end
