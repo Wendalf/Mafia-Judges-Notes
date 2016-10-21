@@ -20,11 +20,8 @@
 </div>
 
 
-
 <h3>What happened so far:</h3>
-<% @game.nights.each_with_index do |night, index| %>
-  <p>Night <%= index+1 %>: <%= night.notes %></p>
-<% end %>
+<%= render 'events' %>
 
 <!-- Outputs everyone's name and their character's name -->
 <%= render 'games/characters_players' %>

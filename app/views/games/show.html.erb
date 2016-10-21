@@ -40,6 +40,7 @@
 <% else %>
   
   <!-- After game over, outputs game results with nights' notes and logs -->
+  <h3>Game Result: <%= result(@game) %> Win!</h3>
   <h3>What happened in this game:</h3>
   <%= render 'nights/events' %>
   <%= render 'characters_players' %>

@@ -19,13 +19,14 @@ class NightsController < ApplicationController
   end
 
   def create
+    logs = ""
     notes = ""
     got_killed = []
     params[:night_events].each do |character_name, player_id|
       character = Character.find_by(name: character_name)
       game_player = GamePlayer.game_player(@game.id, player_id)
       
-      notes << "#{character_name} #{character.ability}ed #{User.find(player_id).name}.<br>"
+      logs << "#{character_name} #{character.ability}ed #{User.find(player_id).name}.<br>"
 
       if character.kill?
         game_player.assign_attributes(player_alive: false)
@@ -47,8 +48,9 @@ class NightsController < ApplicationController
       end   
     end
 
-    @night = Night.create(game_id: params[:game_id], notes: notes)
+    @night = Night.create(game_id: params[:game_id], logs: logs, notes: notes)
     redirect_to game_night_path(@game, @game.nights.size)
+  
   end
 
   def show
@@ -62,14 +64,16 @@ class NightsController < ApplicationController
 
     player_id = params[:day_event][:executed]
 
-    unless player_id == ""
+    if player_id == ""
+      @night.notes << "No body got executed by votes.<br>"
+    else
       game_player = GamePlayer.game_player(@game.id, player_id)
       game_player.update(player_alive: false)
 
-      @night.notes << "#{game_player.player.name} has been executed by majority players' votes.<br>"
-      @night.save
+      @night.notes << "#{game_player.player.name} has been executed by votes.<br>"
     end
-
+    
+    @night.save
     redirect_to new_game_night_path(@game)
   end
 
@@ -93,11 +97,11 @@ class NightsController < ApplicationController
 
   def game_end?
     if GamePlayer.alive_mafia_number(@game) == 0
-      @game.update(game_status: "over")
+      @game.update(game_status: "over", game_result: "good_people")
       flash[:notice] = "Game Over || Good People Win!"
       redirect_to game_path(@game)
     elsif GamePlayer.alive_mafia_number(@game) >= GamePlayer.alive_good_people_number(@game)
-      @game.update(game_status: "over")
+      @game.update(game_status: "over", game_result: "mafia")
       flash[:notice] = "Game Over || Mafia Win!"
       redirect_to game_path(@game)
     end

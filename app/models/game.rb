@@ -7,7 +7,13 @@ class Game < ActiveRecord::Base
 
   accepts_nested_attributes_for :game_players, :reject_if => :all_blank
 
+  validates :capacity, presence: true, numericality: {greater_than_or_equal_to: 7}
+  validates :character_ids, presence: {message: "Game need to have basic characters"}, length: { minimum: 2, message: "Game need to have two basic characters" }
+
+
+
   enum game_status: [:recruiting, :playing, :over]
+  enum game_result: [:stillplaying, :mafia, :good_people]
 
   def self.open_games
     where("game_status = ?", 0)

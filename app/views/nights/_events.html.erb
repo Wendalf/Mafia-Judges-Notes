@@ -1,3 +1,35 @@
-<% @game.nights.each_with_index do |night, index| %>
-  <p>Night <%= index+1 %>: <%= night.notes %></p>
+<% if @game.game_status == "playing" %>
+  
+  <% @game.nights.each_with_index do |night, index| %>
+    <div>
+      <b>Night <%= index+1 %></b>
+      <br>
+      <% notes_array(night).each do |note| %>
+        <%= note %><br>
+      <% end %>
+    </div>
+  <% end %>
+
+<% elsif @game.game_status == "over" %>
+  
+  <% @game.nights.each_with_index do |night, index| %>
+    <div>
+      <p><b>Day <%= index+1 %></b></p>
+      <b>What Happened:</b>
+      <div>
+      <% logs_array(night).each do |log| %>
+        <%= log %>
+        <br>
+      <% end %>
+      </div>
+      <b>End of the Day Result:</b>
+      <div>
+      <% notes_array(night).each do |note| %>
+        <%= note %>
+        <br>
+      <% end %>
+      </div>
+    </div>
+  <% end %>
+
 <% end %>

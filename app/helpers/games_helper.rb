@@ -36,5 +36,8 @@ module GamesHelper
     game.judge == current_user
   end
 
+  def result(game)
+    game.game_result.split("_").collect{|w| w.capitalize}.join(" ")
+  end
 
 end
