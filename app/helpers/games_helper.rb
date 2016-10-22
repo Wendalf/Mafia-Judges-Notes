@@ -13,7 +13,7 @@ module GamesHelper
   end
 
   def can_join_game?
-    !current_user.joined_games.find{|joined_game| joined_game.game_status == "recruiting" || joined_game.game_status == "playing"}
+    !current_user.judging_game && !current_user.joined_game
   end
 
   def show_join_game?(game)

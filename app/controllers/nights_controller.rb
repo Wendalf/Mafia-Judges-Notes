@@ -19,14 +19,15 @@ class NightsController < ApplicationController
   end
 
   def create
-    logs = ""
-    notes = ""
+    @night = Night.new(game_id: params[:game_id])
+
     got_killed = []
+
     params[:night_events].each do |character_name, player_id|
       character = Character.find_by(name: character_name)
       game_player = GamePlayer.game_player(@game.id, player_id)
       
-      logs << "#{character_name} #{character.ability}ed #{User.find(player_id).name}.<br>"
+      @night.logs << "#{character_name} #{character.ability}ed #{User.find(player_id).name}.<br>"
 
       if character.kill?
         game_player.assign_attributes(player_alive: false)
@@ -35,20 +36,20 @@ class NightsController < ApplicationController
         got_killed.delete(game_player)
       end
     end
-
+    
     got_killed.each do |game_player|
       game_player.save
     end
 
     if got_killed.empty?
-      notes << "No one got killed last night.<br>"
+      @night.notes << "No one got killed last night.<br>"
     else
       got_killed.each do |game_player|
-        notes << "#{game_player.player.name} got killed last night.<br>" 
+       @night.notes << "#{game_player.player.name} got killed last night.<br>" 
       end   
     end
 
-    @night = Night.create(game_id: params[:game_id], logs: logs, notes: notes)
+    @night = Night.save
     redirect_to game_night_path(@game, @game.nights.size)
   
   end

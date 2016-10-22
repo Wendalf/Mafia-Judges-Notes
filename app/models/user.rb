@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
 
 
   def self.from_omniauth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+    where(email: auth.info.email).first_or_create do |user|
       user.email = auth.info.email
       user.name = auth.info.name
       user.password = Devise.friendly_token[0,20]
@@ -26,5 +26,14 @@ class User < ActiveRecord::Base
   def players_character_name(game)
     self.game_players.find_by(game_id: game.id).character.name
   end
+
+  def judging_game
+    self.games.find{|game| game.game_status == "recruiting" || game.game_status == "playing"}
+  end
+
+  def joined_game
+    self.joined_games.find{|joined_game| joined_game.game_status == "recruiting" || joined_game.game_status == "playing"}
+  end
+
   
 end

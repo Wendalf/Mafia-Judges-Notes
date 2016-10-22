@@ -27,7 +27,6 @@ class Game < ActiveRecord::Base
     end
   end
 
-
   def game_players_assigned_character
     self.game_players.where.not(character_id: nil, player_id: nil)
   end

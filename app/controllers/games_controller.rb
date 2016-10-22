@@ -16,11 +16,23 @@ class GamesController < ApplicationController
   end
 
   def new
-    @game = Game.new
+    if current_user.judging_game
+      flash[:alert] = "You are already judging this game."
+      redirect_to game_path(current_user.judging_game)
+    elsif current_user.joined_game
+      flash[:alert] = "You've already joined this game."
+      redirect_to game_path(current_user.joined_game)
+    else
+      @game = Game.new
+      @game.characters << Character.find_by(name: "Mafia")
+    end
   end
 
   def create
     @game = Game.new(game_params)
+    #adding mafia by default
+    @game.characters << Character.find_by(name: "Mafia") unless game_params[:character_ids].include?("2")
+    
     if @game.save
       redirect_to game_path(@game)
     else
