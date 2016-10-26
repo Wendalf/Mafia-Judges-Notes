@@ -19,7 +19,7 @@ class NightsController < ApplicationController
   end
 
   def create
-    @night = Night.new(game_id: params[:game_id])
+    @night = Night.new(game_id: @game.id, logs: "", notes: "")
 
     got_killed = []
 
@@ -45,11 +45,11 @@ class NightsController < ApplicationController
       @night.notes << "No one got killed last night.<br>"
     else
       got_killed.each do |game_player|
-       @night.notes << "#{game_player.player.name} got killed last night.<br>" 
+        @night.notes << "#{game_player.player.name} got killed last night.<br>" 
       end   
     end
 
-    @night = Night.save
+    @night.save
     redirect_to game_night_path(@game, @game.nights.size)
   
   end
