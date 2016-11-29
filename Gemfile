@@ -34,6 +34,8 @@ gem 'devise'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-github'
+gem 'figaro'
+gem 'active_model_serializers'
 
 
 group :development, :test do
@@ -42,7 +44,6 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'rspec-rails'
-  gem 'figaro'
 end
 
 group :development do
